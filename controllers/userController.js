@@ -75,7 +75,7 @@ const filterObj = (obj, ...allowedFields) => {
 //  Route handler (controllers)
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-  console.log('updatingssss');
+  // console.log('updatingssss');
 
   // console.log(req.file);
   // console.log(req.body);

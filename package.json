@@ -17,7 +17,7 @@
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": " ndb server.js",
     "watch:js": "webpack --config webpack.config.js",
-    "build:js": "parcel build"
+    "build:js": " webpack build --config ./webpack.config.js --stats verbose"
   },
   "author": "Abdelrhman Nawwar",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "@stripe/stripe-js": "^1.32.0",
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",

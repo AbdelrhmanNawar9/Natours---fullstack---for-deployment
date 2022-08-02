@@ -144,8 +144,8 @@ export const displayMap = (locations) => {
     );
 
     if (hit) {
-      console.log('hit');
-      console.log({ id: point.id });
+      // console.log('hit');
+      // console.log({ id: point.id });
       document.getElementById(`popup-${point.id}`).style.display = 'block';
     }
   });

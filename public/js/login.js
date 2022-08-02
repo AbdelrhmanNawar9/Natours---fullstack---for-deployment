@@ -8,7 +8,7 @@ export const login = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v1/users/login',
+      url: '/api/v1/users/login',
       data: {
         email,
         password,
@@ -36,7 +36,7 @@ export const login = async (email, password) => {
 // };
 
 //   // Send the login request to the API usibg pure JS
-//   const URL = `http://127.0.0.1:3000/api/v1/users/login`;
+//   const URL = `/api/v1/users/login`;
 //   const otherParams = {
 //     headers: { 'content-type': 'application/json; charset=UTF-8' },
 //     body: JSON.stringify(data),
@@ -50,7 +50,7 @@ export const login = async (email, password) => {
 //     })
 //     .then(function (res) {
 //       console.log({ responseData: res.data });
-//       window.location = 'http://127.0.0.1:3000/account';
+//       window.location = '/account';
 //     })
 //     .catch((err) => {
 //       console.log(err);
@@ -62,7 +62,7 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/api/v1/users/logout',
+      url: '/api/v1/users/logout',
     });
     if (res.data.status === 'success') {
       // console.log('sssss', window.location.pathname);
@@ -73,7 +73,7 @@ export const logout = async () => {
       location.reload(true);
     }
   } catch (err) {
-    console.log({ err: err.response });
+    // console.log({ err: err.response });
     showAlert('error', 'Error logging out! Try again.');
   }
 };

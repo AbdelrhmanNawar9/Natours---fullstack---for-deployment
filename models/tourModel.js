@@ -62,7 +62,6 @@ const tourSchema = new mongoose.Schema(
       validate: {
         validator: function (val) {
           // this refers to the current document only on new document creation not updating
-          console.log(val, this.price);
           return val < this.price;
         },
         message: 'Discount price ({VALUE}) should be below regular price ',
@@ -167,12 +166,12 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-tourSchema.post(/^find/, function (docs, next) {
-  // this is gonna point to the query result [docs]
-  console.log(`Query took ${Date.now() - this.start} milliseconds`);
+// tourSchema.post(/^find/, function (docs, next) {
+//   // this is gonna point to the query result [docs]
+//   console.log(`Query took ${Date.now() - this.start} milliseconds`);
 
-  next();
-});
+//   next();
+// });
 
 // aggregation Middleware
 // tourSchema.pre('aggregate', function (next) {
