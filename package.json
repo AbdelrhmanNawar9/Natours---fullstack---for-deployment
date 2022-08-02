@@ -13,7 +13,8 @@
     }
   },
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": " ndb server.js",
     "watch:js": "webpack --config webpack.config.js",
