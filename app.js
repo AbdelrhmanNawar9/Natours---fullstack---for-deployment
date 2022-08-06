@@ -60,7 +60,7 @@ app.use('/api', limiter);
 
 // We need the body in raw format (stripe function that will read the body needs that) not json so we make that route before the .json middleware (as this middleware convert the body to json format )
 app.post(
-  'webhook-checkout',
+  '/webhook-checkout',
   express.raw({ type: 'application.json' }),
   bookingController.webhookCheckout
 );
