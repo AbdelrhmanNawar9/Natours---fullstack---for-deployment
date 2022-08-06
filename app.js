@@ -17,6 +17,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
@@ -31,6 +32,7 @@ app.set('views', path.join(__dirname, 'views'));
 //  1) GLOBAL MIDDLEWARES
 // Implement CORS
 app.use(cors());
+
 app.options('*', cors());
 
 // Serving static files
@@ -55,6 +57,13 @@ const limiter = rateLimit({
 });
 // only apply the limiter to routes starts with /api
 app.use('/api', limiter);
+
+// We need the body in raw format (stripe function that will read the body needs that) not json so we make that route before the .json middleware (as this middleware convert the body to json format )
+app.post(
+  'webhook-checkout',
+  express.raw({ type: 'application.json' }),
+  bookingController.webhookCheckout
+);
 
 // Body parser, reading date from the body into req.body
 app.use(
