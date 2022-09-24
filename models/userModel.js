@@ -63,7 +63,7 @@ userSchema.pre('save', async function (next) {
   // hash is a async version (will return a promise )because we don't want to block the event loop and prevent other users
   // hash the password with the cost of 12
   // the higher the cost the stronger the password (will take longer time ) and will be with larger length but 12 is ok
-  this.password = await bcrypt.hash(this.password, 12);
+  // this.password = await bcrypt.hash(this.password, 12);
   // console.log(this.password);
   // Delete passwordConfirm field as we don't need it anymore
   this.passwordConfirm = undefined;
@@ -72,7 +72,7 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.pre('save', async function (next) {
-  //  Don't update passwordChangedAt property for newly created user
+  //  Don't update passwordChangedAt property for newly created user or for changing user info other than password
   if (!this.isModified('password') || this.isNew) return next();
 
   // we subtract a 1000 ms because assigning to DB may take some time(1 second)
@@ -81,7 +81,7 @@ userSchema.pre('save', async function (next) {
   // that may cause the following
   // changePasswordAfter function may be return a wrong true then the protect function will return error (User recently changed password! Please log in again)
 
-  // so we subtract 1000ms to make sure that in resetPassword controller in authController the created token its JWTTimestamp is after changedAtTimestamp (from save middleware)
+  // so we subtract 1000ms to make sure that in resetPassword controller in authController the created token its JWTTimestamp is after changedAtTimestamp (from save middleware)  all that to guarantee that there is an unintended behaviour from method changePasswordAfter
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
@@ -104,8 +104,8 @@ userSchema.methods.correctPassword = async function (
 };
 
 userSchema.methods.changePasswordAfter = function (JWTTimestamp) {
+  // If user change his password
   if (this.passwordChangedAt) {
-    // getting time in ms
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
       10
@@ -115,7 +115,7 @@ userSchema.methods.changePasswordAfter = function (JWTTimestamp) {
     return changedTimestamp > JWTTimestamp;
   }
 
-  // False means not changed
+  // False means not changed after last token creation
   return false;
 };
 

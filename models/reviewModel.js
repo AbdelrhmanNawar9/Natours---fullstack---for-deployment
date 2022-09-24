@@ -41,18 +41,18 @@ reviewSchema.index({ user: 1, tour: 1 }, { unique: true });
 
 // Query middleware tp populate user and tour for the review
 reviewSchema.pre(/^find/, function (next) {
-  //   this.populate({
-  //     path: 'tour',
-  //     select: 'name',
-  //   }).populate({
-  //     path: 'user',
-  //     select: 'name photo',
-  //   });
-
   this.populate({
+    path: 'tour',
+    select: 'name imageCover',
+  }).populate({
     path: 'user',
     select: 'name photo',
   });
+
+  // this.populate({
+  //   path: 'user',
+  //   select: 'name photo',
+  // });
   next();
 });
 

@@ -1,5 +1,6 @@
 const multer = require('multer');
 const jimp = require('jimp');
+const fs = require('fs');
 
 const User = require('../models/userModel');
 const catchAsync = require('../utilities/catchAsync');
@@ -38,7 +39,7 @@ const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
   limits: {
-    fileSize: 1000000,
+    fileSize: 10000000,
   },
 });
 
@@ -91,7 +92,22 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
   // 2) Filter out unwanted fields names that are not allowed to be updated
   const filteredBody = filterObj(req.body, 'name', 'email');
-  if (req.file) filteredBody.photo = req.file.filename;
+
+  // Delete the old photo if there was a new photo
+  if (req.file) {
+    filteredBody.photo = req.file.filename;
+    const oldPhotoName = req.user.photo;
+
+    // delete the older photo
+    fs.unlink(`public/img/users/${oldPhotoName}`, (err) => {
+      if (err) {
+        return next(
+          new AppError("Couldn't delete the old photo. Please try again!", 500)
+        );
+      }
+      // console.log('Old photo is deleted.');
+    });
+  }
 
   // 2) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {

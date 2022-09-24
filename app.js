@@ -38,8 +38,13 @@ app.options('*', cors());
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+
 // Set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 
 // Development logging
 // make the logging middleware only in the development environment
@@ -47,17 +52,22 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-//  Limit requests from the same IP
-// rateLimit is a middleware (function)
-// Allow 100 req from a certain IP in 1hr
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, Please try again in an hour',
-});
-// only apply the limiter to routes starts with /api
-app.use('/api', limiter);
+//  Limit requests from the same IP In production only
 
+if (process.env.ENVIRONMENT === 'production') {
+  // rateLimit is a middleware (function)
+  // Allow 100 req from a certain IP in 1hr
+  const limiter = rateLimit({
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many requests from this IP, Please try again in an hour',
+  });
+  // only apply the limiter to routes starts with /api
+  app.use('/api', limiter);
+}
+
+// this route to which Stripe will automatically send a POST request  to whenever a checkout session has successfully  completed,so basically whenever a payment was successful.
+// and stripe will post the session that we created earlier
 // We need the body in raw format (stripe function that will read the body needs that) not json so we make that route before the .json middleware (as this middleware convert the body to json format )
 app.post(
   '/webhook-checkout',
@@ -76,6 +86,7 @@ app.use(cookieParser());
 
 // Date sanitization against NoSQL query injection
 app.use(mongoSanitize());
+
 // Date sanitization against XSS
 app.use(xss());
 

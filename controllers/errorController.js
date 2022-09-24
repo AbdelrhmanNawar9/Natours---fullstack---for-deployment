@@ -38,7 +38,7 @@ const sendErrorDev = (err, res, req) => {
   }
 
   // B- Rendered  website
-  // console.log('Error 😩', err);
+  console.log('Error 😩', err);
   return res.status(err.statusCode).render('error', {
     title: 'Something went wrong!',
     msg: err.message,
@@ -51,6 +51,7 @@ const sendErrorProd = (err, res, req) => {
     // A-1
     // Operational, trusted error, send message to the client
     if (err.isOperational) {
+      console.log('Error 😩 ', err);
       return res.status(err.statusCode).json({
         status: err.status,
         message: err.message,

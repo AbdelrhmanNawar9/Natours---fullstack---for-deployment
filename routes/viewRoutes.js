@@ -12,6 +12,7 @@ router.get(
   authController.isLoggedIn,
   viewsController.getOverview
 );
+
 router.get(
   '/tour/:tourName',
   authController.isLoggedIn,

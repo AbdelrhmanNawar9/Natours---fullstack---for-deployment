@@ -71,9 +71,15 @@ exports.getOne = (Model, popOption) =>
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
-    // To allow getting all the reviews for specific tour (hack)
     let filter = {};
+    // To allow getting all the reviews for specific tour (hack)
     if (req.params.tourId) filter = { tour: req.params.tourId };
+
+    // To allow getting all the reviews for specific user (hack) or to allow getting all the bookings for a specific user
+    if (req.params.userId)
+      filter = {
+        user: req.params.userId,
+      };
 
     // EXECUTE QUERY
     const features = new APIFeatures(Model.find(filter), req.query)

@@ -76,7 +76,7 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-  // 1) Get the token and check if it is there
+  // 1) Get the token via authorization header and via cookie and check if it is there
   let token = '';
   if (
     req.headers.authorization &&
@@ -106,7 +106,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       )
     );
   }
-  // 4) Check if user change password after the token was issued
+  // 4) Check if user change password after the token was issued(given to a user)
   // iat is the timestamp for the token creation time (token issued)
   if (currentUser.changePasswordAfter(decoded.iat)) {
     return next(

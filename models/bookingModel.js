@@ -29,7 +29,7 @@ const bookingSchema = new mongoose.Schema({
 bookingSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'tour',
-    select: 'name',
+    select: 'name imageCover slug startDates',
   }).populate('user');
   next();
 });
