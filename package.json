@@ -21,7 +21,7 @@
     "build:js": " webpack build --config ./webpack.config.js --stats verbose",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "heroku-postbuild": "cd ./frontend  && ng build"
+    "heroku-postbuild": "(cd /frontend && ng build)"
   },
   "author": "Abdelrhman Nawwar",
   "license": "ISC",
