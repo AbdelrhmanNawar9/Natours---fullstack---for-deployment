@@ -63,7 +63,7 @@ userSchema.pre('save', async function (next) {
   // hash is a async version (will return a promise )because we don't want to block the event loop and prevent other users
   // hash the password with the cost of 12
   // the higher the cost the stronger the password (will take longer time ) and will be with larger length but 12 is ok
-  // this.password = await bcrypt.hash(this.password, 12);
+  this.password = await bcrypt.hash(this.password, 12);
   // console.log(this.password);
   // Delete passwordConfirm field as we don't need it anymore
   this.passwordConfirm = undefined;
