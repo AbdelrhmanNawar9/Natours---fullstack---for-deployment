@@ -37,6 +37,7 @@ app.options('*', cors());
 
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'angular')));
 
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'public/index.html'));
@@ -116,15 +117,18 @@ app.use((req, res, next) => {
 // ROUTES
 
 // mounting routes to specific routers
-app.use('/', viewRouter);
+// app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/bookings', bookingRouter);
-
-app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server `, 404));
+app.use((req, res, next) => {
+  res.sendFile('/', path.join(__dirname, 'angular', 'index.html'));
 });
+
+// app.all('*', (req, res, next) => {
+//   next(new AppError(`Can't find ${req.originalUrl} on this server `, 404));
+// });
 
 // Global error handling middleware
 // By defining four parameters express know that it is a error handler middleware
