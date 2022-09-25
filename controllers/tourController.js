@@ -82,13 +82,13 @@ exports.updateTour = factory.updateOne(Tour);
 exports.deleteTour = factory.deleteOne(Tour);
 
 exports.getTourBySlug = catchAsync(async (req, res, next) => {
-  console.log(req.params.slug);
+  // console.log(req.params.slug);
   const query = Tour.findOne({ slug: req.params.slug });
 
   query.populate({ path: 'reviews' });
 
   const doc = await query;
-  console.log({ doc });
+  // console.log({ doc });
   if (!doc) {
     return next(new AppError('No document Found With This Name', 404));
   }
