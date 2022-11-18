@@ -35,7 +35,7 @@ app.use(cors());
 
 app.options('*', cors());
 
-// Serving static files
+// Serving static files from specific locations 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'angular')));
 
