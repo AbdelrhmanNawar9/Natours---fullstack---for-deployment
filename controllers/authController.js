@@ -53,7 +53,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
   // 'http://127.0.0.1:3000/me'
   const url = `${req.protocol}://${req.get('host')}/me`;
-  await new Email(newUser, url).sendWelcome();
+  // await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, req, res);
 });
